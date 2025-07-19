@@ -1,0 +1,41 @@
+# Correlation Examples: Pearson, Spearman, Kendall
+
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from scipy.stats import pearsonr, spearmanr, kendalltau
+
+examples = {
+    "Linear Relationship (Y = X)": lambda x: x,
+    "Non-Linear Monotonic (Y = X^3)": lambda x: x**3,
+    "Non-Linear Non-Monotonic (Y = X^2)": lambda x: x**2,
+    "Step Function": lambda x: np.where(x < 0, -1, 1),
+    "Sinusoidal Relationship (Y = sin(X))": lambda x: np.sin(x)
+}
+
+np.random.seed(42)
+x = np.linspace(-5, 5, 50)
+
+for name, func in examples.items():
+    y = func(x)
+    df = pd.DataFrame({'X': x, 'Y': y})
+
+    pearson_corr, _ = pearsonr(df['X'], df['Y'])
+    spearman_corr, _ = spearmanr(df['X'], df['Y'])
+    kendall_corr, _ = kendalltau(df['X'], df['Y'])
+
+    print(f"\n=== {name} ===")
+    print("Pearson correlation: ", round(pearson_corr, 4))
+    print("Spearman correlation:", round(spearman_corr, 4))
+    print("Kendall correlation: ", round(kendall_corr, 4))
+
+    # Visualization
+    plt.figure(figsize=(6, 4))
+    plt.scatter(df['X'], df['Y'], color='blue')
+    plt.title(f"{name}\nPearson: {round(pearson_corr, 2)} | Spearman: {round(spearman_corr, 2)} | Kendall: {round(kendall_corr, 2)}")
+    plt.xlabel("X")
+    plt.ylabel("Y")
+    plt.grid(True)
+    plt.tight_layout()
+    plt.show()
+  
