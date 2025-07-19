@@ -17,7 +17,6 @@ Each example:
 
 ```bash
 pip install numpy pandas matplotlib scipy
-python correlation_examples.py
+python correlation_analysis_2/code.py
 ```
 
-Each plot will display one-by-one. Press Enter to continue to the next.
